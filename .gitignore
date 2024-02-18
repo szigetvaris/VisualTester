@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Django
+db.sqlite3
+media/
+
+# JavaScript
+node_modules/
+/build/
+
+# React
+/.idea
+/.vscode
+.DS_Store
