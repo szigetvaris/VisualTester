@@ -46,3 +46,21 @@
 - executionID
 - name
 - filepath
+
+
+# Pages
+
+1. Main page?? Do I need? [ok] // HomePage
+2. MenuView
+    - user
+        - profile
+        - logout
+    - test
+    - testplan
+3. Test listing page [ok]
+4. Test details page [ok]
+5. Create Test page
+6. Riport view
+7. Test Plan Listing Page
+8. Test plan details page
+9. Merged Riport View
