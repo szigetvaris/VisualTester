@@ -29,7 +29,7 @@ export default class MenuView extends Component {
           <Button
             color="primary"
             variant="text"
-            to="/testListing"
+            to="/"
             component={Link}
           >
             👤 Profile
@@ -59,10 +59,10 @@ export default class MenuView extends Component {
           <Button
             color="secondary"
             variant="text"
-            to="/testListing"
+            to="/"
             component={Link}
           >
-            ↪️ Logout
+            Logout
           </Button>
         </Grid>
       </Grid>

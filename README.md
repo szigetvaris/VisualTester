@@ -64,3 +64,19 @@
 7. Test Plan Listing Page
 8. Test plan details page
 9. Merged Riport View
+
+## Usecases
+more complex functions:
+- Create Test
+    - input data:
+        - name
+        - test implementation file
+    - 
+- Generate Riport
+    - compare images with reference images
+    - indicate the differences with red rectangles
+    - save diff images
+    - riport should furtherly contain some info about error (if we get)
+        - cypress will probably create some logs if error occours
+- Generate Merged Riport
+- Execute Test Plan
