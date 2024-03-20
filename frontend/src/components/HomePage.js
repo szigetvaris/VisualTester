@@ -21,19 +21,25 @@ export default class HomePage extends Component {
   render() {
     return (
       <Router>
-        <div style={{backgroundColor: "#123456"}}>
+        <div style={{ backgroundColor: "#123456" }}>
           <MenuView />
         </div>
         <div>
-        <Routes>
-          {/* <Route path='/' element={<p>This is home page</p>} /> */}
-          <Route path="/" element={<p>Hello this is HomePage</p>} />
-          <Route path="/testListing" element={<TestListingPage />} />
-          <Route path="/testDetails" element={<TestDetailsPage />} />
-          <Route path="/testPlanListing" element={<TestPlanListingPage />} />
-          <Route path="/testPlanDetails" element={<TestPlanDetailsPage />} />
-          <Route path="/createTest" element={<CreateTestPage />} />
-        </Routes>
+          <Routes>
+            {/* Home page route + Testing pages under development*/}
+            <Route
+              path="/"
+              element={
+                // <p>Hello this is HomePage</p>
+                <CreateTestPage />
+              }
+            />
+            <Route path="/testListing" element={<TestListingPage />} />
+            <Route path="/testDetails" element={<TestDetailsPage />} />
+            <Route path="/testPlanListing" element={<TestPlanListingPage />} />
+            <Route path="/testPlanDetails" element={<TestPlanDetailsPage />} />
+            <Route path="/createTest" element={<CreateTestPage />} />
+          </Routes>
         </div>
       </Router>
     );

@@ -39,7 +39,7 @@ export default class MenuView extends Component {
           <Button
             color="primary"
             variant="text"
-            to="/testListing"
+            to="/createTest"
             component={Link}
           >
             🎯 Test

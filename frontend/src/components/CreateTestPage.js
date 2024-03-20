@@ -19,12 +19,28 @@ export default class CreateTestPage extends Component {
     this.state = {
       // technikailag itt nekem meg nem is az implementationt kell atadnom hanem a filet fizikailag feltolteni, ezt a backend eltarolja es majd ott hatarozza meg a path-t
       implementation: "",
+      name: "",
+      testType: "",
     };
 
     this.handleCreateTestButtonPressed =
       this.handleCreateTestButtonPressed.bind(this);
     this.handleImplementationChange =
       this.handleImplementationChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleFileTypeChange = this.handleFileTypeChange.bind(this);
+  }
+
+  handleNameChange(e) {
+    this.setState({
+      name: e.target.value,
+    });
+  }
+
+  handleFileTypeChange(e) {
+    this.setState({
+      implementation: e.target.value,
+    });
   }
 
   handleImplementationChange(e) {
@@ -52,28 +68,23 @@ export default class CreateTestPage extends Component {
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">
           <Typography component="h4" variant="h4">
-            Add new Test
+            Add a new Test
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">
-          <FormControl component="fieldset">
-            <FormHelperText>
-              <div align="center">Valami form helper szoveg</div>
-            </FormHelperText>
-            <RadioGroup row defaultValue="true">
-              <FormControlLabel
-                value="true"
-                control={<Radio color="primary" />}
-                label="Play/Pause"
-                labelPlacement="bottom"
-              />
-              <FormControlLabel
-                value="false"
-                control={<Radio color="secondary" />}
-                label="No Control"
-                labelPlacement="bottom"
-              />
-            </RadioGroup>
+          <FormControl>
+            <FormHelperText>Test name</FormHelperText>
+            <TextField
+              required={true}
+              autoFocus={true}
+              onChange={this.handleNameChange}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} align="center">
+          <FormControl>
+            <FormHelperText>Test implementation Type</FormHelperText>
+            <TextField required={true} onChange={this.handleFileTypeChange} />
           </FormControl>
         </Grid>
         <Grid item xs={12} align="center">

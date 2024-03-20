@@ -22,11 +22,22 @@ class CreateTestView(APIView):
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            name = serializer.data.get('name')
+            testType = serializer.data.get('testType')
             implementation = serializer.data.get('implementation')
 
+            print(implementation)
             # logic
-            test = Test(implementation=implementation)
-            test.save()
+            # ugye itt megkapom majd a file-t nem tudom azt siman at lehet-e passzolni JSON-nel
+            # utana eltarolom es a filepath-t adom meg a test entitasnak.
+            # itt figyelembe kell venni hogy milyen tarolot hasznalok, osztott kozos tarolo,
+            # vagy a local semmi dockerizalassal. HARD
+            test = Test(
+                name=name,
+                testType=testType,
+                implementation=implementation
+            )
+            # test.save()
 
             return Response(TestSerializer(test).data, status=status.HTTP_201_CREATED)
 
