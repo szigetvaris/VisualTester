@@ -28,7 +28,7 @@ export default class MenuView extends Component {
         <Grid item xs={12} align="center">
           <Button
             color="primary"
-            variant="text"
+            variant="contained"
             to="/"
             component={Link}
           >
@@ -38,8 +38,8 @@ export default class MenuView extends Component {
         <Grid item xs={12} align="center">
           <Button
             color="primary"
-            variant="text"
-            to="/createTest"
+            variant="contained"
+            to="/testListing"
             component={Link}
           >
             🎯 Test
@@ -48,7 +48,7 @@ export default class MenuView extends Component {
         <Grid item xs={12} align="center">
           <Button
             color="primary"
-            variant="text"
+            variant="contained"
             to="/testPlanListing"
             component={Link}
           >
@@ -58,7 +58,7 @@ export default class MenuView extends Component {
         <Grid item xs={12} align="center">
           <Button
             color="secondary"
-            variant="text"
+            variant="contained"
             to="/"
             component={Link}
           >

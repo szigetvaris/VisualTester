@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .models import Test
 from .serializers import TestSerializer, CreateTestSerializer
 
+from .utils import test_form_is_valid
 
 class TestView(generics.ListAPIView):
     queryset = Test.objects.all()
@@ -15,18 +16,13 @@ class TestView(generics.ListAPIView):
 
 class CreateTestView(APIView):
     serializer_class = CreateTestSerializer
-
+    
     def post(self, request, format=None):
-        # if not self.request.session.exists(self.request.session.session_key):
-        #     self.request.session.create()
-
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            name = serializer.data.get('name')
-            testType = serializer.data.get('testType')
-            implementation = serializer.data.get('implementation')
-
-            print(implementation)
+        name = request.data['name']
+        testType = request.data['testType']
+        implementation = request.data['implementation']
+        
+        if test_form_is_valid(name, testType, implementation):
             # logic
             # ugye itt megkapom majd a file-t nem tudom azt siman at lehet-e passzolni JSON-nel
             # utana eltarolom es a filepath-t adom meg a test entitasnak.
@@ -35,9 +31,9 @@ class CreateTestView(APIView):
             test = Test(
                 name=name,
                 testType=testType,
-                implementation=implementation
+                implementation='fake/path/implementation.cy.js'
             )
-            # test.save()
+            test.save()
 
             return Response(TestSerializer(test).data, status=status.HTTP_201_CREATED)
 

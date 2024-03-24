@@ -11,4 +11,4 @@ class CreateTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
         # only fields we want to declare.. fucking important comma if there is only one field -_-
-        fields = ('name', 'testType', 'implementation', )
+        fields = ('name', 'testType', 'implementation' )
