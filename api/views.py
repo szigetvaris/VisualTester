@@ -12,7 +12,7 @@ from .utils import test_form_is_valid
 class TestView(generics.ListAPIView):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
-
+    
 
 class CreateTestView(APIView):
     serializer_class = CreateTestSerializer

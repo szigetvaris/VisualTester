@@ -69,10 +69,10 @@ export default class CreateTestPage extends Component {
     console.log(this.state);
     const formData = new FormData();
 
-    formData.append('name', this.state.name)
-    formData.append('testType', this.state.testType)
-    formData.append('implementation', this.state.implementation)
-    
+    formData.append("name", this.state.name);
+    formData.append("testType", this.state.testType);
+    formData.append("implementation", this.state.implementation);
+
     axios
       .post("/api/createTest", formData, {
         headers: {
@@ -81,9 +81,11 @@ export default class CreateTestPage extends Component {
       })
       .then((response) => {
         console.log(response);
+        // siker popup
       })
       .catch((error) => {
         console.error("Error", error);
+        // sikertelenseg popup
       });
   }
 
@@ -131,7 +133,12 @@ export default class CreateTestPage extends Component {
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
-          <Button color="secondary" variant="contained" to="/" component={Link}>
+          <Button
+            color="secondary"
+            variant="contained"
+            to="/testListing"
+            component={Link}
+          >
             Back
           </Button>
         </Grid>

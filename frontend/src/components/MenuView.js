@@ -24,7 +24,7 @@ export default class MenuView extends Component {
 
   render() {
     return (
-      <Grid container spacing={1}>
+      <Grid container spacing={1} style={{padding: '20px'}}>
         <Grid item xs={12} align="center">
           <Button
             color="primary"
