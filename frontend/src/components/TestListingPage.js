@@ -35,14 +35,12 @@ export default class TestListingPage extends Component {
   };
 
   handleEdit = (id) => {
-    // Handle edit action
     console.log("Todo test edit");
   };
 
   handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/object/${id}`);
-      // Remove deleted object from state
+      await axios.delete(`/api/deleteTest/${id}`);
       this.setState((prevState) => ({
         objects: prevState.objects.filter((obj) => obj.id !== id),
       }));
