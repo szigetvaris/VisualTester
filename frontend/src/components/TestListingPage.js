@@ -9,6 +9,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Grid,
+  Divider,
 } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -34,9 +35,11 @@ export default class TestListingPage extends Component {
     }
   };
 
-  handleEdit = (id) => {
-    console.log("Todo test edit");
-  };
+  // handleEdit = (id) => {
+  //   try {
+      
+  //   }
+  // };
 
   handleDelete = async (id) => {
     try {
@@ -73,23 +76,29 @@ export default class TestListingPage extends Component {
         </Grid>
         <List>
           {this.state.objects.map((obj) => (
-            <ListItem key={obj.id}>
-              <Grid container spacing={1}>
-                <Grid item xs={10}>
-                  <ListItemText primary={obj.name} />
+            <div key={obj.id}>
+              <ListItem key={obj.id}>
+                <Grid container spacing={1}>
+                  <Grid item xs={10}>
+                    <ListItemText primary={obj.name} />
+                  </Grid>
+                  <Grid item xs={1}>
+                    {/* <IconButton onClick={() => this.handleEdit(obj.id)}>
+                      <Edit />
+                    </IconButton> */}
+                    <IconButton to={`/testDetails/${obj.id}`} component={Link}>
+                      <Edit />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButton onClick={() => this.handleDelete(obj.id)}>
+                      <Delete />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-                <Grid item xs={1}>
-                  <IconButton onClick={() => this.handleEdit(obj.id)}>
-                    <Edit />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton onClick={() => this.handleDelete(obj.id)}>
-                    <Delete />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            </ListItem>
+              </ListItem>
+              <Divider component={"li"} />
+            </div>
           ))}
         </List>
       </div>

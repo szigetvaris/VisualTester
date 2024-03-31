@@ -53,3 +53,9 @@ class TestDeleteView(generics.DestroyAPIView):
         instance.deletedAt = timezone.now()
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class TestDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TestSerializer
+
+    def get_queryset(self):
+        return Test.objects.filter(pk=self.kwargs['pk'])

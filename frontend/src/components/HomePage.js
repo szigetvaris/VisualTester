@@ -35,7 +35,7 @@ export default class HomePage extends Component {
               }
             />
             <Route path="/testListing" element={<TestListingPage />} />
-            <Route path="/testDetails" element={<TestDetailsPage />} />
+            <Route path="/testDetails/:id" element={<TestDetailsPage />} />
             <Route path="/testPlanListing" element={<TestPlanListingPage />} />
             <Route path="/testPlanDetails" element={<TestPlanDetailsPage />} />
             <Route path="/createTest" element={<CreateTestPage />} />
