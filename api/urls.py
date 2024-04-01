@@ -11,5 +11,5 @@ urlpatterns = [
     path("testPlan", TestPlanView.as_view()),
     path("createTestPlan", CreateTestPlanView.as_view()),
     path("deleteTestPlan/<int:pk>/", TestPlanDeleteView.as_view()),
-    path("testPlan/<int:pk>/", TestPlanDeleteView.as_view()),
+    path("testPlan/<int:pk>/", TestPlanDetailsView.as_view()),
 ]
