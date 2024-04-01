@@ -5,15 +5,15 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Test
-from .serializers import TestSerializer, CreateTestSerializer
+from .models import Test, TestPlan
+from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer
 
-from .utils import test_form_is_valid
+from .utils import test_form_is_valid, testPlan_form_is_valid
 
 
 class TestView(generics.ListAPIView):
     serializer_class = TestSerializer
-    
+
     def get_queryset(self):
         return Test.objects.filter(deletedAt__isnull=True)
 
@@ -53,9 +53,51 @@ class TestDeleteView(generics.DestroyAPIView):
         instance.deletedAt = timezone.now()
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 class TestDetailsView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TestSerializer
 
     def get_queryset(self):
         return Test.objects.filter(pk=self.kwargs['pk'])
+
+
+class TestPlanView(generics.ListAPIView):
+    serializer_class = TestPlanSerializer
+
+    def get_queryset(self):
+        return TestPlan.objects.filter(deletedAt__isnull=True)
+
+
+class CreateTestPlanView(APIView):
+    serialize_class = CreateTestPlanSerializer
+
+    def post(self, request, format=None):
+        name = request.data['name']
+
+        if testPlan_form_is_valid(name):
+            testPlan = TestPlan(name=name)
+            testPlan.save()
+
+            return Response(TestPlanSerializer(testPlan).data, status=status.HTTP_201_CREATED)
+
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TestPlanDeleteView(generics.DestroyAPIView):
+    queryset = Test.objects.all()
+    serializer_class = TestPlanSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.deleteAt = timezone.now()
+        instance.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TestPlanDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TestPlanSerializer
+
+    def get_queryset(self):
+        return TestPlan.objects.filter(pk=self.kwargs['pk'])

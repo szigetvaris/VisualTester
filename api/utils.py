@@ -5,3 +5,9 @@ def test_form_is_valid(name, testType, implementation):
             # TODO: implementation is a valid .js file
             return True
     return False
+
+
+def testPlan_form_is_valid(name):
+    if isinstance(name, str) and name.strip() != '':
+        return True
+    return False
