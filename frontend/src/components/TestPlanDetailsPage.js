@@ -33,17 +33,32 @@ function TestPlanDetailsPage() {
     }
   };
 
+  const handleNameChange = (event) => {
+    object.name = event.target.value;
+  };
+
   if (object === null) {
-    return <p>Loading...</p>;
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (
     <div style={{ backgroundColor: "#fff199", width: "100%" }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-          <Typography variant="h4" gutterBottom>
-            {object.name}
-          </Typography>
+          <TextField
+            label=""
+            variant="outlined"
+            defaultValue={object.name}
+            onChange={handleNameChange}
+            inputProps={{ readOnly: false }} // Ezzel engedélyezzük a szerkesztést
+            InputProps={{
+              style: { fontSize: "20px", fontWeight: "bold" }, // Adjust the font size here
+            }}
+          />
         </Grid>
         <Grid item xs={2}>
           <Button variant="contained" color="primary" to="/" component={Link}>
@@ -57,19 +72,30 @@ function TestPlanDetailsPage() {
         </Grid>
 
         <Grid item xs={3}>
-          <Typography variant="body1" gutterBottom>
-            <div style={{ fontWeight: "bold" }}>Test Plan ID</div> {object.id}
+          <Typography
+            variant="body1"
+            gutterBottom
+            style={{ fontWeight: "bold" }}
+          >
+            Test Plan ID: {object.id}
           </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography variant="body1" gutterBottom>
-            <div style={{ fontWeight: "bold" }}>Last Run</div> {object.runAt}
+          <Typography
+            variant="body1"
+            gutterBottom
+            style={{ fontWeight: "bold" }}
+          >
+            Last run: {object.runAt}
           </Typography>
         </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body1" gutterBottom>
-            <div style={{ fontWeight: "bold" }}>Created At</div>{" "}
-            {object.createdAt}
+        <Grid item xs={3}>
+          <Typography
+            variant="body1"
+            gutterBottom
+            style={{ fontWeight: "bold" }}
+          >
+            Created at: {object.createdAt}
           </Typography>
         </Grid>
       </Grid>

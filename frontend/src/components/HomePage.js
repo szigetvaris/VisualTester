@@ -28,7 +28,7 @@ export default class HomePage extends Component {
         <div style={{ padding: "20px", width: "100%" }}>
           <Routes>
             {/* Home page route + Testing pages under development*/}
-            <Route path="/" element={<p>Hello this is HomePage</p>} />
+            <Route path="/" element={<div><p>Hello this is HomePage</p></div>} />
             <Route path="/testListing" element={<TestListingPage />} />
             <Route path="/testDetails/:id" element={<TestDetailsPage />} />
             <Route path="/testPlanListing" element={<TestPlanListingPage />} />
