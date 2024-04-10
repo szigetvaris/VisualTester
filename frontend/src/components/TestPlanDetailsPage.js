@@ -15,6 +15,8 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+import AddTestDialog from "./dialogs/AddTestDialog";
+
 function TestPlanDetailsPage() {
   const [object, setObject] = useState(null);
   const { id } = useParams();
@@ -33,9 +35,11 @@ function TestPlanDetailsPage() {
     }
   };
 
+
   const handleNameChange = (event) => {
     object.name = event.target.value;
   };
+
 
   if (object === null) {
     return (
@@ -61,9 +65,7 @@ function TestPlanDetailsPage() {
           />
         </Grid>
         <Grid item xs={2}>
-          <Button variant="contained" color="primary" to="/" component={Link}>
-            Save
-          </Button>
+          <AddTestDialog />
         </Grid>
         <Grid item xs={2}>
           <Button variant="contained" color="secondary" to="/" component={Link}>
