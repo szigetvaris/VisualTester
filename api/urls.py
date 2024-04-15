@@ -12,4 +12,6 @@ urlpatterns = [
     path("createTestPlan", CreateTestPlanView.as_view()),
     path("deleteTestPlan/<int:pk>/", TestPlanDeleteView.as_view()),
     path("testPlan/<int:pk>/", TestPlanDetailsView.as_view()),
+    # Contains URLs
+    path("contains", CreateContainsView.as_view()),
 ]

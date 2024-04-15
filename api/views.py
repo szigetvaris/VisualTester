@@ -5,7 +5,7 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Test, TestPlan
+from .models import Test, TestPlan, Contains
 from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer
 
 from .utils import test_form_is_valid, testPlan_form_is_valid
@@ -101,3 +101,31 @@ class TestPlanDetailsView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return TestPlan.objects.filter(pk=self.kwargs['pk'])
+
+
+# Contains views
+# add new Contains entry
+class CreateContainsView(APIView):
+    def post(self, request, format=None):
+        testID = request.data['testID']
+        testPlanID = request.data['testPlanID']
+        # check if test and testPlan exists
+        try:
+            test = Test.objects.get(pk=testID)
+            testPlan = TestPlan.objects.get(pk=testPlanID)
+        except:
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+        # check if already exists
+        try:
+            contain = Contains.objects.get(testID=test, testPlanID=testPlan)
+            return Response({'Bad Request': 'Already exists...'}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            contain = Contains(testID=test, testPlanID=testPlan)
+            contain.save()
+            
+        return Response(status=status.HTTP_200_OK)
+    
+
+# contains lekerese? ha szukseges? nem biztos
+# contains letrehozasa
+# contains torlese

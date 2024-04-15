@@ -25,3 +25,5 @@ class CreateTestPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestPlan
         fields = ('name',)
+        
+
