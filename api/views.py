@@ -111,7 +111,7 @@ class CreateContainsView(APIView):
         testPlanID = request.data['testPlanID']
         # check if test and testPlan exists
         try:
-            test = Test.objects.get(pk=testID)
+            test = Test.objects.get(pk=testID, deletedAt__isnull=True)
             testPlan = TestPlan.objects.get(pk=testPlanID)
         except:
             return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
@@ -126,9 +126,22 @@ class CreateContainsView(APIView):
         return Response(status=status.HTTP_200_OK)
     
 
-# contains lekerese? ha szukseges? nem biztos
-# contains letrehozasa
 # contains torlese
+# get the test and test plan id in post request body
+class DeleteContainsView(APIView):
+    def post(self, request, *args, **kwargs):
+        testID = request.data['testID']
+        testPlanID = request.data['testPlanID']
+        
+        # check if a connection exists with this test and test plan
+        try:
+            contain = Contains.objects.get(testID=testID, testPlanID=testPlanID)
+            # if exists delete it
+            contain.delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 # Select Test Plans for given test
 class TestPlansForTestView(APIView):

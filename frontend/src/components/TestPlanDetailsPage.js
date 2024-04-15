@@ -20,7 +20,12 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Edit, Delete, SlowMotionVideo } from "@material-ui/icons";
+import {
+  Edit,
+  Delete,
+  SlowMotionVideo,
+  RemoveCircle,
+} from "@material-ui/icons";
 
 import AddTestDialog from "./dialogs/AddTestDialog";
 
@@ -52,8 +57,26 @@ function TestPlanDetailsPage() {
       console.error("Error fetching tests:", error);
     }
   };
+
   const handleNameChange = (event) => {
     object.name = event.target.value;
+  };
+
+  const handleDelete = async (testID, testPlanID) => {
+    const response = await fetch('/api/deleteContains', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ testID, testPlanID }),
+    });
+
+    if (!response.ok) {
+      console.error('Error deleting test from test plan');
+    }
+    
+    // refresh the component
+    fetchTests();
   };
 
   if (object === null) {
@@ -87,7 +110,7 @@ function TestPlanDetailsPage() {
           </Button>
         </Grid>
         <Grid item xs={2}>
-          <AddTestDialog />
+          <AddTestDialog fetchTests={fetchTests} />
         </Grid>
         <Grid item xs={2}>
           <Button
@@ -143,13 +166,15 @@ function TestPlanDetailsPage() {
           <div key={obj.id}>
             <ListItem key={obj.id}>
               <Grid container spacing={1}>
-                <Grid item xs={11}>
+                <Grid item xs={10}>
                   <ListItemText primary={obj.name} />
                 </Grid>
                 <Grid item xs={1}>
-                  {/* <IconButton onClick={() => this.handleEdit(obj.id)}>
-                      <Edit />
-                    </IconButton> */}
+                  <IconButton onClick={() => handleDelete(obj.id, object.id)}>
+                    <RemoveCircle />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={1}>
                   <IconButton to={`/testDetails/${obj.id}`} component={Link}>
                     <Edit />
                   </IconButton>

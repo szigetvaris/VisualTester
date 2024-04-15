@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 
-export default function FormDialog() {
+export default function FormDialog({ fetchTests}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -21,7 +21,31 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const testPlanID = window.location.pathname.split("/").pop();
+    const testID = tID.value;
+    fetch("/api/contains", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ testPlanID, testID }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Test added to Test Plan");
+        } else {
+          console.error("Error adding test to Test Plan");
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding test to Test Plan:", error);
+      });
+
+    fetchTests();
+    handleClose();
+  };
 
   return (
     <React.Fragment>
@@ -38,14 +62,7 @@ export default function FormDialog() {
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
+          onSubmit: handleSubmit,
         }}
       >
         <DialogTitle>Add Test to Test Plan</DialogTitle>
@@ -57,7 +74,7 @@ export default function FormDialog() {
             autoFocus
             required
             margin="dense"
-            id="testID"
+            id="tID"
             name="Test ID"
             label="Test ID"
             type="e.g. 42"
@@ -67,9 +84,7 @@ export default function FormDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" onClick={handleSubmit}>
-            Add
-          </Button>
+          <Button type="submit">Add</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
