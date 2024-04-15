@@ -20,7 +20,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Edit, Delete } from "@material-ui/icons";
+import { Edit, Delete, Save } from "@material-ui/icons";
 
 function TestDetailsPage() {
   const [object, setObject] = useState(null);
@@ -76,12 +76,24 @@ function TestDetailsPage() {
           />
         </Grid>
         <Grid item xs={2}>
-          <Button variant="contained" color="primary" to="/" component={Link}>
+          <Button
+            variant="contained"
+            color="primary"
+            to="/"
+            component={Link}
+            startIcon={<Save />}
+          >
             Save
           </Button>
         </Grid>
         <Grid item xs={2}>
-          <Button variant="contained" color="secondary" to="/" component={Link}>
+          <Button
+            variant="contained"
+            color="secondary"
+            to="/"
+            component={Link}
+            startIcon={<Delete />}
+          >
             Delete
           </Button>
         </Grid>
@@ -114,7 +126,7 @@ function TestDetailsPage() {
           </Typography>
         </Grid>
       </Grid>
-      <Divider style={{ height: '2px'}}/>
+      <Divider style={{ height: "2px" }} />
       <Typography variant="h6" gutterBottom>
         Contained by these Test Plans:
       </Typography>

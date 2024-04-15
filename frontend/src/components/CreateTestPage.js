@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ArrowBackIos, Send } from "@material-ui/icons";
 
 export default class CreateTestPage extends Component {
   constructor(props) {
@@ -51,21 +52,6 @@ export default class CreateTestPage extends Component {
   }
 
   handleCreateTestButtonPressed(e) {
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     // ezeknek a neveknek matchelniuk kell a backendes nevekkel!
-    //     name: this.state.name,
-    //     testType: this.state.testType,
-    //     implementation: this.state.implementation.name,
-    //   }),
-    // };
-    // console.log(requestOptions);
-    // fetch("/api/createTest", requestOptions)
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
-
     console.log(this.state);
     const formData = new FormData();
 
@@ -128,6 +114,7 @@ export default class CreateTestPage extends Component {
             color="primary"
             variant="contained"
             onClick={this.handleCreateTestButtonPressed}
+            startIcon={<Send />}
           >
             Create Test
           </Button>
@@ -138,6 +125,7 @@ export default class CreateTestPage extends Component {
             variant="contained"
             to="/testListing"
             component={Link}
+            startIcon={<ArrowBackIos />}
           >
             Back
           </Button>

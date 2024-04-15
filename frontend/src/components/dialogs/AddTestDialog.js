@@ -8,6 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
@@ -20,13 +21,16 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    
-  };
+  const handleSubmit = (event) => {};
 
   return (
     <React.Fragment>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<Add />}
+        onClick={handleClickOpen}
+      >
         Add Test
       </Button>
       <Dialog

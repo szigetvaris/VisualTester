@@ -12,6 +12,12 @@ import {
   Button,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import {
+  AccountCircle,
+  BugReport,
+  FormatListBulleted,
+  ExitToApp,
+} from "@material-ui/icons";
 
 export default class MenuView extends Component {
   constructor(props) {
@@ -24,15 +30,16 @@ export default class MenuView extends Component {
 
   render() {
     return (
-      <Grid container spacing={1} style={{padding: '20px'}}>
+      <Grid container spacing={1} style={{ padding: "20px" }}>
         <Grid item xs={12} align="center">
           <Button
             color="primary"
             variant="contained"
             to="/"
             component={Link}
+            startIcon={<AccountCircle />}
           >
-            👤 Profile
+            Profile
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
@@ -41,8 +48,9 @@ export default class MenuView extends Component {
             variant="contained"
             to="/testListing"
             component={Link}
+            startIcon={<BugReport />}
           >
-            🎯 Test
+            Test
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
@@ -51,8 +59,9 @@ export default class MenuView extends Component {
             variant="contained"
             to="/testPlanListing"
             component={Link}
+            startIcon={<FormatListBulleted />}
           >
-            📋 Testplan
+            Testplan
           </Button>
         </Grid>
         <Grid item xs={12} align="center">
@@ -61,6 +70,7 @@ export default class MenuView extends Component {
             variant="contained"
             to="/"
             component={Link}
+            startIcon={<ExitToApp />}
           >
             Logout
           </Button>

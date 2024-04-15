@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ArrowBackIos, Send } from "@material-ui/icons";
 
 export default class CreateTestPlanPage extends Component {
   constructor(props) {
@@ -77,6 +78,7 @@ export default class CreateTestPlanPage extends Component {
             color="primary"
             variant="contained"
             onClick={this.handleCreateTestPlanButtonPressed}
+            startIcon={<Send />}
           >
             Create Test Plan
           </Button>
@@ -87,6 +89,7 @@ export default class CreateTestPlanPage extends Component {
             variant="contained"
             to="/testPlanListing"
             component={Link}
+            startIcon={<ArrowBackIos />}
           >
             Back
           </Button>

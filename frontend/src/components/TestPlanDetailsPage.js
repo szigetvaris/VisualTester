@@ -20,7 +20,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Edit, Delete } from "@material-ui/icons";
+import { Edit, Delete, SlowMotionVideo } from "@material-ui/icons";
 
 import AddTestDialog from "./dialogs/AddTestDialog";
 
@@ -63,7 +63,7 @@ function TestPlanDetailsPage() {
   return (
     <div style={{ width: "100%" }}>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <TextField
             label=""
             variant="outlined"
@@ -76,10 +76,27 @@ function TestPlanDetailsPage() {
           />
         </Grid>
         <Grid item xs={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SlowMotionVideo />}
+            to="/"
+            component={Link}
+          >
+            Run
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
           <AddTestDialog />
         </Grid>
         <Grid item xs={2}>
-          <Button variant="contained" color="secondary" to="/" component={Link}>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<Delete />}
+            to="/"
+            component={Link}
+          >
             Delete
           </Button>
         </Grid>

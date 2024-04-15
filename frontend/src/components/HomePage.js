@@ -25,7 +25,7 @@ export default class HomePage extends Component {
         <div style={{ backgroundColor: "#292e4d" }}>
           <MenuView />
         </div>
-        <div style={{ backgroundColor: "#dae0fd", padding: "20px", width: "100%" }}>
+        <div style={{ padding: "20px", width: "100%" }}>
           <Routes>
             {/* Home page route + Testing pages under development*/}
             <Route path="/" element={<p>Hello this is HomePage</p>} />

@@ -11,7 +11,7 @@ import {
   Grid,
   Divider,
 } from "@material-ui/core";
-import { Edit, Delete } from "@material-ui/icons";
+import { Edit, Delete, Add } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 export default class TestListingPage extends Component {
@@ -67,6 +67,7 @@ export default class TestListingPage extends Component {
               color="primary"
               to="/createTest"
               component={Link}
+              startIcon={<Add />}
             >
               Add Test
             </Button>
