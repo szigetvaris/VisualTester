@@ -22,10 +22,10 @@ export default class HomePage extends Component {
   render() {
     return (
       <Router>
-        <div style={{ backgroundColor: "#123456" }}>
+        <div style={{ backgroundColor: "#292e4d" }}>
           <MenuView />
         </div>
-        <div style={{ padding: "20px", width: "100%" }}>
+        <div style={{ backgroundColor: "#dae0fd", padding: "20px", width: "100%" }}>
           <Routes>
             {/* Home page route + Testing pages under development*/}
             <Route path="/" element={<p>Hello this is HomePage</p>} />
