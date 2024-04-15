@@ -129,3 +129,21 @@ class CreateContainsView(APIView):
 # contains lekerese? ha szukseges? nem biztos
 # contains letrehozasa
 # contains torlese
+
+# Select Test Plans for given test
+class TestPlansForTestView(APIView):
+    def get(self, request,  *args, **kwargs):
+        contains = Contains.objects.filter(testID=self.kwargs['testID'])
+        test_palns = []
+        for contain in contains:
+            test_palns.append(TestPlanSerializer(contain.testPlanID).data)
+        return Response(test_palns, status=status.HTTP_200_OK)
+    
+# Select Tests for given test plan
+class TestsForTestPlanView(APIView):
+    def get(self, request, *args, **kwargs):
+        contains = Contains.objects.filter(testPlanID=self.kwargs['testPlanID'])
+        tests = []
+        for contain in contains:
+            tests.append(TestSerializer(contain.testID).data)
+        return Response(tests, status=status.HTTP_200_OK)

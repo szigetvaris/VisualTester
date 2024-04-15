@@ -12,17 +12,26 @@ import {
   FormLabel,
   Grid,
   Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { Edit, Delete } from "@material-ui/icons";
 
 import AddTestDialog from "./dialogs/AddTestDialog";
 
 function TestPlanDetailsPage() {
   const [object, setObject] = useState(null);
+  const [tests, setTests] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     fetchObject();
+    fetchTests();
   }, []);
 
   const fetchObject = async () => {
@@ -35,22 +44,24 @@ function TestPlanDetailsPage() {
     }
   };
 
-
+  const fetchTests = async () => {
+    try {
+      const response = await axios.get(`/api/getContainsTP/${id}`);
+      setTests(response.data);
+    } catch (error) {
+      console.error("Error fetching tests:", error);
+    }
+  };
   const handleNameChange = (event) => {
     object.name = event.target.value;
   };
 
-
   if (object === null) {
-    return (
-      <div>
-        <p>Loading...</p>
-      </div>
-    );
+    return <h1>Loading...</h1>;
   }
 
   return (
-    <div style={{ backgroundColor: "#fff199", width: "100%" }}>
+    <div style={{ width: "100%" }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <TextField
@@ -101,6 +112,37 @@ function TestPlanDetailsPage() {
           </Typography>
         </Grid>
       </Grid>
+      <Divider style={{ height: "2px" }} />
+      <Typography variant="h6" gutterBottom>
+        Tests:
+      </Typography>
+      {tests.length === 0 && (
+        <Typography variant="body1" gutterBottom>
+          No test has added yet...
+        </Typography>
+      )}
+      <List>
+        {tests.map((obj) => (
+          <div key={obj.id}>
+            <ListItem key={obj.id}>
+              <Grid container spacing={1}>
+                <Grid item xs={11}>
+                  <ListItemText primary={obj.name} />
+                </Grid>
+                <Grid item xs={1}>
+                  {/* <IconButton onClick={() => this.handleEdit(obj.id)}>
+                      <Edit />
+                    </IconButton> */}
+                  <IconButton to={`/testDetails/${obj.id}`} component={Link}>
+                    <Edit />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </ListItem>
+            <Divider component={"li"} />
+          </div>
+        ))}
+      </List>
     </div>
   );
 }

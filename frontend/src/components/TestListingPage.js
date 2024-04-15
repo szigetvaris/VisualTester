@@ -37,7 +37,7 @@ export default class TestListingPage extends Component {
 
   // handleEdit = (id) => {
   //   try {
-      
+
   //   }
   // };
 
@@ -53,8 +53,6 @@ export default class TestListingPage extends Component {
   };
 
   render() {
-    console.log(this.state.objects);
-
     return (
       <div style={{ width: "100%" }}>
         <Grid container spacing={1}>
