@@ -10,6 +10,7 @@ import {
   FormLabel,
   Grid,
   Button,
+  Paper,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
@@ -25,12 +26,23 @@ export default class MenuView extends Component {
   }
 
   handleProfileOnClick(e) {
-    console.log("fuck yea");
+    console.log("Why are you even click this?");
   }
 
   render() {
     return (
       <Grid container spacing={1} style={{ padding: "20px" }}>
+        <Grid item xs={12} align="center">
+          <Paper
+            style={{ backgroundColor: "transparent", width: 150, height: 100 }}
+          >
+            <img
+              src="../../static/images/vt_logo5.png"
+              alt="Platform Logo"
+              style={{ width: 100, height: 100 }}
+            />
+          </Paper>
+        </Grid>
         <Grid item xs={12} align="center">
           <Button
             color="primary"
@@ -38,6 +50,7 @@ export default class MenuView extends Component {
             to="/"
             component={Link}
             startIcon={<AccountCircle />}
+            style={{ width: 150 }}
           >
             Profile
           </Button>
@@ -49,6 +62,7 @@ export default class MenuView extends Component {
             to="/testListing"
             component={Link}
             startIcon={<BugReport />}
+            style={{ width: 150 }}
           >
             Test
           </Button>
@@ -60,6 +74,7 @@ export default class MenuView extends Component {
             to="/testPlanListing"
             component={Link}
             startIcon={<FormatListBulleted />}
+            style={{ width: 150 }}
           >
             Testplan
           </Button>
@@ -71,6 +86,7 @@ export default class MenuView extends Component {
             to="/"
             component={Link}
             startIcon={<ExitToApp />}
+            style={{ width: 150 }}
           >
             Logout
           </Button>

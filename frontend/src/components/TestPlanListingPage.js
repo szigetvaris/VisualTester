@@ -66,7 +66,7 @@ export default class TestPlanListingPage extends Component {
               component={Link}
               startIcon={<Add />}
             >
-              Add Test Plan
+              Add
             </Button>
           </Grid>
         </Grid>

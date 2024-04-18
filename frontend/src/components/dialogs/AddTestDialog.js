@@ -55,7 +55,7 @@ export default function FormDialog({ fetchTests}) {
         startIcon={<Add />}
         onClick={handleClickOpen}
       >
-        Add Test
+        Add
       </Button>
       <Dialog
         open={open}

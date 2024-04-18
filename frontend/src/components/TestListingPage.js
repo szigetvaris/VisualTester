@@ -69,7 +69,7 @@ export default class TestListingPage extends Component {
               component={Link}
               startIcon={<Add />}
             >
-              Add Test
+              Add
             </Button>
           </Grid>
         </Grid>
