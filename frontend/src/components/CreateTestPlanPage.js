@@ -20,6 +20,7 @@ export default class CreateTestPlanPage extends Component {
     super(props);
     this.state = {
       name: "",
+      runAt: "",
     };
 
     this.handleCreateTestPlanButtonPressed =
@@ -33,11 +34,18 @@ export default class CreateTestPlanPage extends Component {
     });
   }
 
+  handleRunAtChange(e) {
+    this.setState({
+      runAt: e.target.value,
+    });
+  }
+
   handleCreateTestPlanButtonPressed(e) {
     console.log(this.state);
     const formData = new FormData();
 
     formData.append("name", this.state.name);
+    formData.append("runAt", this.state.runAt);
 
     axios
       .post("/api/createTestPlan", formData, {
@@ -70,6 +78,12 @@ export default class CreateTestPlanPage extends Component {
               required={true}
               autoFocus={true}
               onChange={this.handleNameChange}
+            />
+            <FormHelperText>Run scheduling (with Cron task syntax)</FormHelperText>
+            <TextField
+              required={true}
+              autoFocus={true}
+              onChange={this.handleRunAtChange}
             />
           </FormControl>
         </Grid>

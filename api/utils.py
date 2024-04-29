@@ -7,7 +7,8 @@ def test_form_is_valid(name, testType, implementation):
     return False
 
 
-def testPlan_form_is_valid(name):
+def testPlan_form_is_valid(name, runAt):
     if isinstance(name, str) and name.strip() != '':
-        return True
+        if isinstance(runAt, str):
+            return True
     return False

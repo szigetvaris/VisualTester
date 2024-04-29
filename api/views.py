@@ -74,9 +74,10 @@ class CreateTestPlanView(APIView):
 
     def post(self, request, format=None):
         name = request.data['name']
+        runAt = request.data['runAt']
 
-        if testPlan_form_is_valid(name):
-            testPlan = TestPlan(name=name)
+        if testPlan_form_is_valid(name, runAt):
+            testPlan = TestPlan(name=name, runAt=runAt)
             testPlan.save()
 
             return Response(TestPlanSerializer(testPlan).data, status=status.HTTP_201_CREATED)
