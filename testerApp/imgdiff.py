@@ -34,6 +34,8 @@ def compare_and_draw_rectangles(reference_picture_path, actual_picture_path):
     
     cv2.imwrite('./../data/result/ref_diff.png', reference_img)
     cv2.imwrite('./../data/result/act_diff.png', actual_img)
+    
+    # return True/False if len(contours) > 0
 
 
 # before = cv2.imread('./../data/p3_ref.png')

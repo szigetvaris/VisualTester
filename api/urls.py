@@ -17,4 +17,6 @@ urlpatterns = [
     path("getContainsT/<int:testID>/", TestPlansForTestView.as_view()),
     path("getContainsTP/<int:testPlanID>/", TestsForTestPlanView.as_view()),
     path("deleteContains", DeleteContainsView.as_view()),
+    # Test Plan Run
+    path("runTestPlan/<int:pk>/", TestPlanRun),
 ]

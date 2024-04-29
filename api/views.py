@@ -5,10 +5,11 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Test, TestPlan, Contains
+from .models import Test, TestPlan, Contains, TestPlanExecution
 from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer
 
 from .utils import test_form_is_valid, testPlan_form_is_valid
+from .tasks import runAgent
 
 
 class TestView(generics.ListAPIView):
@@ -161,3 +162,9 @@ class TestsForTestPlanView(APIView):
         for contain in contains:
             tests.append(TestSerializer(contain.testID).data)
         return Response(tests, status=status.HTTP_200_OK)
+    
+def TestPlanRun(request, pk):
+    TPExecution = TestPlanExecution(testPlanID=pk)
+    TPExecution.save()
+    response = runAgent.delay(TPExecution)
+    return HttpResponse(f"Test Plan with id {pk} is running...")

@@ -5,6 +5,7 @@ class Test(models.Model):
     name = models.CharField(max_length=255, null=True)
     testType = models.CharField(max_length=255, null=True)
     implementation = models.CharField(max_length=255, default='')
+    referenceID = models.IntegerField(null=True) # ID of the pervious successful execution
     createdAt = models.DateTimeField(auto_now_add=True)
     deletedAt = models.DateTimeField(null=True)
 
@@ -43,7 +44,6 @@ class TestExecution(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     bugs = models.IntegerField(null=True) # Number of different images
     executionTime = models.FloatField(null=True) # Time from cypress logs
-    referenceID = models.IntegerField(default=True) # ID of the pervious successful execution
     info = models.CharField(max_length=511, null=True) # Info extracted from cypress logs
     
 class TestImage(models.Model):

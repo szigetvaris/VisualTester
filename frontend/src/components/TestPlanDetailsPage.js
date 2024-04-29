@@ -62,19 +62,33 @@ function TestPlanDetailsPage() {
     object.name = event.target.value;
   };
 
+  const handleRun = async (testPlanID) => {
+    const response = await fetch(`/api/runTestPlan/${testPlanID}/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    });
+
+    if (!response.ok) {
+      console.error("Error running test plan");
+    }
+
+    // change to test plan execution
+  };
+
   const handleDelete = async (testID, testPlanID) => {
-    const response = await fetch('/api/deleteContains', {
-      method: 'POST',
+    const response = await fetch("/api/deleteContains", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ testID, testPlanID }),
     });
 
     if (!response.ok) {
-      console.error('Error deleting test from test plan');
+      console.error("Error deleting test from test plan");
     }
-    
+
     // refresh the component
     fetchTests();
   };
@@ -103,7 +117,7 @@ function TestPlanDetailsPage() {
             variant="contained"
             color="primary"
             startIcon={<SlowMotionVideo />}
-            to="/"
+            onClick={() => handleRun(object.id)}
             component={Link}
           >
             Run
