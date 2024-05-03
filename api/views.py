@@ -5,12 +5,15 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Test, TestPlan, Contains, TestPlanExecution
+from .models import Test, TestPlan, Contains, TestPlanExecution, TestExecution
 from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer
 
 from .utils import test_form_is_valid, testPlan_form_is_valid
-from .tasks import runAgent
+from .tasks import runAgent, runAgentRef
 
+import os
+
+APP_ROOT_DIR = '/home/simon/Projects/dipi/testerApp'
 
 class TestView(generics.ListAPIView):
     serializer_class = TestSerializer
@@ -28,18 +31,27 @@ class CreateTestView(APIView):
         implementation = request.data['implementation']
 
         if test_form_is_valid(name, testType, implementation):
-            # logic
-            # ugye itt megkapom majd a file-t nem tudom azt siman at lehet-e passzolni JSON-nel
-            # utana eltarolom es a filepath-t adom meg a test entitasnak.
-            # itt figyelembe kell venni hogy milyen tarolot hasznalok, osztott kozos tarolo,
-            # vagy a local semmi dockerizalassal. HARD
             test = Test(
                 name=name,
                 testType=testType,
                 implementation='fake/path/implementation.cy.js'
             )
             test.save()
-
+            
+            # Save the implementation file and update the test object
+            path = os.path.join(APP_ROOT_DIR, 'data/cypress/cypress/e2e/test-' + str(test.id) + '.cy.ts')
+            with open(path, 'wb+') as destination:
+                for chunk in implementation.chunks():
+                    destination.write(chunk)
+            test.implementation = path
+            test.save()
+            
+            # Test reference run
+            # Run the test and save the reference run
+            testExecution = TestExecution(testID=test)
+            testExecution.save()
+            runAgentRef.delay(testExecution.id)
+            
             return Response(TestSerializer(test).data, status=status.HTTP_201_CREATED)
 
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)

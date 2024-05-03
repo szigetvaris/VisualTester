@@ -8,6 +8,7 @@ class Test(models.Model):
     referenceID = models.IntegerField(null=True) # ID of the pervious successful execution
     createdAt = models.DateTimeField(auto_now_add=True)
     deletedAt = models.DateTimeField(null=True)
+    executions = models.IntegerField(default=0)
 
 
 class TestPlan(models.Model):
@@ -39,7 +40,7 @@ class TestExecution(models.Model):
     ]
     
     testID = models.ForeignKey(Test, models.CASCADE)
-    testPlanExecutionID = models.ForeignKey(TestPlanExecution, models.CASCADE)
+    testPlanExecutionID = models.ForeignKey(TestPlanExecution, models.CASCADE, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Run')
     createdAt = models.DateTimeField(auto_now_add=True)
     bugs = models.IntegerField(null=True) # Number of different images
