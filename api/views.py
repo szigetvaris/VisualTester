@@ -164,7 +164,8 @@ class TestsForTestPlanView(APIView):
         return Response(tests, status=status.HTTP_200_OK)
     
 def TestPlanRun(request, pk):
-    TPExecution = TestPlanExecution(testPlanID=pk)
+    tp = TestPlan.objects.get(pk=pk)
+    TPExecution = TestPlanExecution(testPlanID=tp)
     TPExecution.save()
-    response = runAgent.delay(TPExecution)
+    response = runAgent.delay(TPExecution.id)
     return HttpResponse(f"Test Plan with id {pk} is running...")

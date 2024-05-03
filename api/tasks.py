@@ -8,23 +8,26 @@ def sharedtask():
 
 
 @shared_task
-def runAgent(testPlanExecution):
-    tests = Contains.objects.filter(testPlanID=testPlanExecution.testPlanID)
+def runAgent(testPlanExecutionID):
+    tpExecution = TestPlanExecution.objects.get(pk=testPlanExecutionID)
+    contains = Contains.objects.filter(testPlanID=tpExecution.testPlanID)
+    tests = [contain.testID for contain in contains]
+    
     # Step 0 - extract file paths and run the Cypress tests
     filePaths = [t.implementation for t in tests]
     # docker -it run ...
     
-    for test in tests:
-        # Step 1 - create a TestExecution object
-        testExecution = TestExecution(testID=test.testID, testPlanExecutionID=testPlanExecution)
-        testExecution.save()
+    # for test in tests:
+    #     # Step 1 - create a TestExecution object
+    #     testExecution = TestExecution(testID=test.testID, testPlanExecutionID=testPlanExecution)
+    #     testExecution.save()
         
         # Step 2 - Image diff calculation
         # Case 1: Test did not run before
         # For all images in the cypress screenshots/testName folder
         # Move images from cypress screenshots to the persistent folder
-        # Create a TestImage entry for each image
-        # Set Test.referenceID to the current TestExecution ID
+        # Create a TestImage entry for each imageTestExecution
+        # Set Test.referenceID to the current  ID
         
         # Case 2: Tast has a reference run
         # For all images in the cypress screenshots/testName folder
