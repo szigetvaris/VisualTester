@@ -43,14 +43,21 @@ class TestExecution(models.Model):
     testPlanExecutionID = models.ForeignKey(TestPlanExecution, models.CASCADE, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Not Run')
     createdAt = models.DateTimeField(auto_now_add=True)
-    bugs = models.IntegerField(null=True) # Number of different images
+    bugs = models.IntegerField(default=0) # Number of different images
     executionTime = models.FloatField(null=True) # Time from cypress logs
     info = models.CharField(max_length=511, null=True) # Info extracted from cypress logs
     
 class TestImage(models.Model):
+    STATUS_CHOICES = [
+        ('Pass', 'Pass'),
+        ('Fail', 'Fail'),
+        ('TODO', 'TODO'),
+    ]
+    
     testExecutionID = models.ForeignKey(TestExecution, models.CASCADE)
     name = models.CharField(max_length=127)
     imagePath = models.CharField(max_length=255)
     createdAt = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='TODO')
     
     
