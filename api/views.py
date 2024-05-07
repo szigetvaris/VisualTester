@@ -15,6 +15,7 @@ import os
 
 APP_ROOT_DIR = '/home/simon/Projects/dipi/testerApp'
 
+
 class TestView(generics.ListAPIView):
     serializer_class = TestSerializer
 
@@ -37,21 +38,22 @@ class CreateTestView(APIView):
                 implementation='fake/path/implementation.cy.js'
             )
             test.save()
-            
+
             # Save the implementation file and update the test object
-            path = os.path.join(APP_ROOT_DIR, 'data/cypress/cypress/e2e/test-' + str(test.id) + '.cy.ts')
+            path = os.path.join(
+                APP_ROOT_DIR, 'data/cypress/cypress/e2e/test-' + str(test.id) + '.cy.ts')
             with open(path, 'wb+') as destination:
                 for chunk in implementation.chunks():
                     destination.write(chunk)
             test.implementation = path
             test.save()
-            
+
             # Test reference run
             # Run the test and save the reference run
             testExecution = TestExecution(testID=test)
             testExecution.save()
             runAgentRef.delay(testExecution.id)
-            
+
             return Response(TestSerializer(test).data, status=status.HTTP_201_CREATED)
 
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
@@ -136,9 +138,9 @@ class CreateContainsView(APIView):
         except:
             contain = Contains(testID=test, testPlanID=testPlan)
             contain.save()
-            
+
         return Response(status=status.HTTP_200_OK)
-    
+
 
 # contains torlese
 # get the test and test plan id in post request body
@@ -146,16 +148,17 @@ class DeleteContainsView(APIView):
     def post(self, request, *args, **kwargs):
         testID = request.data['testID']
         testPlanID = request.data['testPlanID']
-        
+
         # check if a connection exists with this test and test plan
         try:
-            contain = Contains.objects.get(testID=testID, testPlanID=testPlanID)
+            contain = Contains.objects.get(
+                testID=testID, testPlanID=testPlanID)
             # if exists delete it
             contain.delete()
             return Response(status=status.HTTP_200_OK)
         except:
             return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 # Select Test Plans for given test
 class TestPlansForTestView(APIView):
@@ -165,16 +168,20 @@ class TestPlansForTestView(APIView):
         for contain in contains:
             test_palns.append(TestPlanSerializer(contain.testPlanID).data)
         return Response(test_palns, status=status.HTTP_200_OK)
-    
+
 # Select Tests for given test plan
+
+
 class TestsForTestPlanView(APIView):
     def get(self, request, *args, **kwargs):
-        contains = Contains.objects.filter(testPlanID=self.kwargs['testPlanID'])
+        contains = Contains.objects.filter(
+            testPlanID=self.kwargs['testPlanID'])
         tests = []
         for contain in contains:
             tests.append(TestSerializer(contain.testID).data)
         return Response(tests, status=status.HTTP_200_OK)
-    
+
+
 def TestPlanRun(request, pk):
     tp = TestPlan.objects.get(pk=pk)
     TPExecution = TestPlanExecution(testPlanID=tp)

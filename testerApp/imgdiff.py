@@ -2,6 +2,7 @@ from skimage.metrics import structural_similarity as compare_ssim
 import cv2
 import numpy as np
 
+
 def compare_and_draw_rectangles(reference_picture_path, actual_picture_path):
     # Read the reference and actual pictures
     reference_img = cv2.imread(reference_picture_path)
@@ -19,14 +20,18 @@ def compare_and_draw_rectangles(reference_picture_path, actual_picture_path):
 
     # Threshold the difference image, followed by finding contours to
     # obtain the regions of the two input images that differ
-    thresh = cv2.threshold(diff, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    thresh = cv2.threshold(
+        diff, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+    contours, _ = cv2.findContours(
+        thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw rectangles around the differences
     for contour in contours:
-        if cv2.contourArea(contour) > 500:  # you can adjust this value based on your needs
+        # you can adjust this value based on your needs
+        if cv2.contourArea(contour) > 500:
             x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(reference_img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            cv2.rectangle(reference_img, (x, y),
+                          (x + w, y + h), (0, 0, 255), 2)
             cv2.rectangle(actual_img, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
     # Save the output images

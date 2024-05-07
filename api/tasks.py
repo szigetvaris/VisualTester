@@ -59,31 +59,33 @@ def runAgent(testPlanExecutionID):
     tpExecution.save()
     # Step 0 - extract file paths and run the Cypress tests
     filePaths = [extract_test_name(t.implementation) for t in tests]
-    
+
     docker_command = ('docker run -it -v ' + CYPRESS_ROOT_DIR
                       + ':/cypress/e2e -w /cypress/e2e cypress/included:12.12.0 --spec '
                       + ' '.join(filePaths))
-    
+
     process = subprocess.Popen(
         docker_command, shell=True, stdout=subprocess.PIPE)
     process.wait()
     print(f"Cypress Process finished {process.returncode}")
-    
-        
+
     for test in tests:
         # Step 0 - Create the testExecution object
-        testExecution = TestExecution(testID=test, testPlanExecutionID=tpExecution)
+        testExecution = TestExecution(
+            testID=test, testPlanExecutionID=tpExecution)
         testExecution.save()
         test.executions += 1
         test.save()
-        
+
         # Step 1 - copy the images into the persistent folder
         copy_image_resource(test.id, test.executions)
-        
+
         # Step 2 - create Image objects from the output images
-        refPictureDir = os.path.join(APP_ROOT_DIR, f"data/result/test-{test.id}.cy.ts/{test.referenceID}")
+        refPictureDir = os.path.join(
+            APP_ROOT_DIR, f"data/result/test-{test.id}.cy.ts/{test.referenceID}")
         os.makedirs(refPictureDir, exist_ok=True)
-        actualPictureDir = os.path.join(APP_ROOT_DIR, f"data/result/test-{test.id}.cy.ts/{test.executions}")
+        actualPictureDir = os.path.join(
+            APP_ROOT_DIR, f"data/result/test-{test.id}.cy.ts/{test.executions}")
         os.makedirs(actualPictureDir, exist_ok=True)
         refFiles = os.listdir(refPictureDir)
         actualFiles = os.listdir(actualPictureDir)
@@ -93,8 +95,10 @@ def runAgent(testPlanExecutionID):
             refPicturePath = os.path.join(refPictureDir, refFileName)
             actualPicturePath = os.path.join(actualPictureDir, actualFileName)
             if os.path.isfile(refPicturePath) and os.path.isfile(actualPicturePath):
-                testImage = TestImage(testExecutionID=testExecution, name=actualFileName, imagePath=actualPicturePath)
-                bug = compare_and_draw_rectangles(refPicturePath, actualPicturePath)
+                testImage = TestImage(
+                    testExecutionID=testExecution, name=actualFileName, imagePath=actualPicturePath)
+                bug = compare_and_draw_rectangles(
+                    refPicturePath, actualPicturePath)
                 if bug:
                     testImage.status = "Fail"
                     testExecution.bugs += 1
@@ -102,19 +106,21 @@ def runAgent(testPlanExecutionID):
                 else:
                     testImage.status = "Pass"
                 testImage.save()
-                print(f"Test Image {actualFileName} saved") 
-                
+                print(f"Test Image {actualFileName} saved")
+
             else:
-                print(f"File {refPicturePath} or {actualPicturePath} not found")          
-        
+                print(
+                    f"File {refPicturePath} or {actualPicturePath} not found")
+
         # Step 3 - fill the testExecution with the data, if needed.
         testExecution.status = "Pass" if testExecution.bugs == 0 else "Fail"
-        # execution time   
-    
+        # execution time
+
     tpExecution.status = "Completed"
     tpExecution.lastRun = datetime.datetime.now()
     tpExecution.save()
     print("Test Plan Execution finished")
+
 
 @shared_task
 def runAgentRef(testExecutionID):
@@ -160,4 +166,3 @@ def runAgentRef(testExecutionID):
         testExecution.save()
     else:
         print(f"Error executing {test.name} test...")
-
