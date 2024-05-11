@@ -26,4 +26,7 @@ module.exports = {
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
   ],
+  watchOptions: {
+    ignored: /node_modules/,
+  },
 };
