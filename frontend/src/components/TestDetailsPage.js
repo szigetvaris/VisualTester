@@ -20,26 +20,35 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Edit, Delete, Save } from "@material-ui/icons";
+import { Edit, Delete, Save, RemoveRedEye } from "@material-ui/icons";
 
 function TestDetailsPage() {
   const [object, setObject] = useState(null);
   const [testPlans, setTestPlans] = useState([]);
+  const [testExecutions, setTestExecutions] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     fetchObject();
     fetchTestPlans();
-    console.log("fuck" + testPlans);
+    fetchTestExecutions();
   }, []);
 
   const fetchObject = async () => {
     try {
-      // Itt használhatom az id változót a request összeállításához
       const response = await axios.get(`/api/test/${id}`);
       setObject(response.data);
     } catch (error) {
       console.error("Error fetching object:", error);
+    }
+  };
+
+  const fetchTestExecutions = async () => {
+    try {
+      const response = await axios.get(`/api/testExecution/${id}`);
+      setTestExecutions(response.data);
+    } catch (error) {
+      console.error("Error fetching test executions:", error);
     }
   };
 
@@ -49,6 +58,17 @@ function TestDetailsPage() {
       setTestPlans(response.data);
     } catch (error) {
       console.error("Error fetching test plans:", error);
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Failed":
+        return "red";
+      case "Pass":
+        return "green";
+      default:
+        return "grey";
     }
   };
 
@@ -158,6 +178,32 @@ function TestDetailsPage() {
             </ListItem>
             <Divider component={"li"} />
           </div>
+        ))}
+      </List>
+      <Typography variant="h6" gutterBottom>
+        Test executions:
+      </Typography>
+      <List>
+        {testExecutions.map((exe) => (
+          <ListItem key={exe.id}>
+            <Grid container spacing={1}>
+              <Grid item xs={11}>
+                <ListItemText
+                  primary={`Test Execution ID: ${exe.id}`}
+                  secondary={
+                    <span
+                      style={{ color: getStatusColor(exe.status) }}
+                    >{`Status: ${exe.status}`}</span>
+                  }
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <IconButton to={`/`} component={Link}>
+                  <RemoveRedEye />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </ListItem>
         ))}
       </List>
     </div>

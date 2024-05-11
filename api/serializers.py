@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Test, TestPlan
+from .models import Test, TestPlan, TestExecution, TestPlanExecution
 
 
 class TestSerializer(serializers.ModelSerializer):
@@ -20,10 +20,19 @@ class TestPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestPlan
         fields = ('id', 'name', 'runAt', 'createdAt', 'deletedAt')
-        
+
+
 class CreateTestPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestPlan
         fields = ('name',)
-        
 
+
+class TestExecutionSerializer(serializers.ModelSerializer):
+    testID = serializers.PrimaryKeyRelatedField(read_only=True)
+    testPlanExecutionID = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = TestExecution
+        fields = ['id', 'testID', 'testPlanExecutionID', 'status',
+                  'createdAt', 'bugs', 'executionTime', 'info']

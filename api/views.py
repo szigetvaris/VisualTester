@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Test, TestPlan, Contains, TestPlanExecution, TestExecution
-from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer
+from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer, TestExecutionSerializer
 
 from .utils import test_form_is_valid, testPlan_form_is_valid
 from .tasks import runAgent, runAgentRef
@@ -69,7 +69,7 @@ class TestDeleteView(generics.DestroyAPIView):
         instance.save()
         # Delete related Contains objects
         Contains.objects.filter(testID=instance).delete()
-        
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -185,6 +185,17 @@ class TestsForTestPlanView(APIView):
         for contain in contains:
             tests.append(TestSerializer(contain.testID).data)
         return Response(tests, status=status.HTTP_200_OK)
+
+# Select TestExecution for given Test
+
+
+class TestExecutionForTestView(APIView):
+    def get(self, request, *args, **kwargs):
+        test = Test.objects.get(pk=self.kwargs['testID'])
+        testExecutions = TestExecution.objects.filter(
+            testID=test).order_by('-createdAt')
+
+        return Response(TestExecutionSerializer(testExecutions, many=True).data, status=status.HTTP_200_OK)
 
 
 def TestPlanRun(request, pk):
