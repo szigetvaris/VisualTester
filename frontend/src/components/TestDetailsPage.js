@@ -34,6 +34,12 @@ function TestDetailsPage() {
     fetchTestExecutions();
   }, []);
 
+  const listStyle = {
+    maxHeight: '300px', 
+    overflow: 'auto', 
+    background: '#eeeeee'
+  };
+
   const fetchObject = async () => {
     try {
       const response = await axios.get(`/api/test/${id}`);
@@ -155,7 +161,7 @@ function TestDetailsPage() {
           No test plans contain this test
         </Typography>
       )}
-      <List>
+      <List style={listStyle}>
         {testPlans.map((obj) => (
           <div key={obj.id}>
             <ListItem key={obj.id}>
@@ -183,7 +189,7 @@ function TestDetailsPage() {
       <Typography variant="h6" gutterBottom>
         Test executions:
       </Typography>
-      <List>
+      <List style={listStyle}>
         {testExecutions.map((exe) => (
           <ListItem key={exe.id}>
             <Grid container spacing={1}>
@@ -191,9 +197,13 @@ function TestDetailsPage() {
                 <ListItemText
                   primary={`Test Execution ID: ${exe.id}`}
                   secondary={
+                    <div>
+                    Created at: {exe.createdAt}
                     <span
                       style={{ color: getStatusColor(exe.status) }}
-                    >{`Status: ${exe.status}`}</span>
+                    >{`(Status: ${exe.status})`}</span>
+                    </div>
+                    
                   }
                 />
               </Grid>
