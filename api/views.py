@@ -67,6 +67,9 @@ class TestDeleteView(generics.DestroyAPIView):
         instance = self.get_object()
         instance.deletedAt = timezone.now()
         instance.save()
+        # Delete related Contains objects
+        Contains.objects.filter(testID=instance).delete()
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -101,13 +104,15 @@ class CreateTestPlanView(APIView):
 
 
 class TestPlanDeleteView(generics.DestroyAPIView):
-    queryset = Test.objects.all()
+    queryset = TestPlan.objects.all()
     serializer_class = TestPlanSerializer
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.deleteAt = timezone.now()
+        instance.deletedAt = timezone.now()
         instance.save()
+        # Delete related Contains objects
+        Contains.objects.filter(testPlanID=instance).delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
