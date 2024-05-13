@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Test, TestPlan, Contains, TestPlanExecution, TestExecution
-from .serializers import TestSerializer, CreateTestSerializer, TestPlanSerializer, CreateTestPlanSerializer, TestExecutionSerializer
+from .models import *
+from .serializers import *
 
 from .utils import test_form_is_valid, testPlan_form_is_valid
 from .tasks import runAgent, runAgentRef
@@ -196,6 +198,66 @@ class TestExecutionForTestView(APIView):
             testID=test).order_by('-createdAt')
 
         return Response(TestExecutionSerializer(testExecutions, many=True).data, status=status.HTTP_200_OK)
+
+
+class TestExecutionForTestPlanExecutionView(APIView):
+    def get(self, request, *args, **kwargs):
+        testPlanExecution = TestPlanExecution.objects.get(
+            pk=self.kwargs['testPlanExecutionID'])
+        testExecutions = TestExecution.objects.filter(
+            testPlanExecutionID=testPlanExecution).order_by('-createdAt')
+
+        return Response(TestExecutionSerializer(testExecutions, many=True).data, status=status.HTTP_200_OK)
+    
+    
+class TestExecutionView(APIView):
+    def get(self, request, *args, **kwargs):
+        testExecution = TestExecution.objects.get(pk=self.kwargs['pk'])
+        return Response(TestExecutionSerializer(testExecution).data, status=status.HTTP_200_OK)
+
+class TestPlanExecutionForTestPlanView(APIView):
+    def get(self, request, *args, **kwargs):
+        testPlan = TestPlan.objects.get(pk=self.kwargs['testPlanID'])
+        testPlanExecutions = TestPlanExecution.objects.filter(
+            testPlanID=testPlan).order_by('-createdAt')
+
+        return Response(TestPlanExecutionSerializer(testPlanExecutions, many=True).data, status=status.HTTP_200_OK)
+
+
+class TestPlanExecutionView(APIView):
+    def get(self, request, *args, **kwargs):
+        testPlanExecution = TestPlanExecution.objects.get(pk=self.kwargs['pk'])
+        return Response(TestPlanExecutionSerializer(testPlanExecution).data, status=status.HTTP_200_OK)
+
+
+class TestImagesReferenceView(APIView):
+    def get(self, request, *args, **kwargs):
+        testExecution = TestExecution.objects.get(pk=self.kwargs['pk'])
+        test = testExecution.testID
+        referenceTestExecution = TestExecution.objects.filter(testID=test, status='Pass').order_by('createdAt').first()
+        
+        if referenceTestExecution is None:
+            return Response({'Bad Request': 'No reference found...'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        images = TestImage.objects.filter(testExecutionID=referenceTestExecution)
+        
+        return Response(TestImageSerializer(images, many=True).data, status=status.HTTP_200_OK)
+        
+    
+    
+class TestImageForTestExecutionView(APIView):
+    def get(self, request, *args, **kwargs):
+        testExecution = TestExecution.objects.get(pk=self.kwargs['pk'])
+        images = TestImage.objects.filter(testExecutionID=testExecution)
+        
+        return Response(TestImageSerializer(images, many=True).data, status=status.HTTP_200_OK)
+    
+    
+class TestImageAsImage(APIView):
+    def get(self, request, *args, **kwargs):
+        testImage = get_object_or_404(TestImage, pk=self.kwargs['testImage'])
+        response = FileResponse(open(testImage.imagePath, 'rb'))
+        return response
 
 
 def TestPlanRun(request, pk):

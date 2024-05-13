@@ -51,7 +51,7 @@ function TestDetailsPage() {
 
   const fetchTestExecutions = async () => {
     try {
-      const response = await axios.get(`/api/testExecution/${id}`);
+      const response = await axios.get(`/api/testExecution/test/${id}`);
       setTestExecutions(response.data);
     } catch (error) {
       console.error("Error fetching test executions:", error);
@@ -198,17 +198,17 @@ function TestDetailsPage() {
                   primary={`Test Execution ID: ${exe.id}`}
                   secondary={
                     <div>
-                    Created at: {exe.createdAt}
+                    Created at: {exe.createdAt}  |  Status: 
                     <span
                       style={{ color: getStatusColor(exe.status) }}
-                    >{`(Status: ${exe.status})`}</span>
+                    >{` ${exe.status}`}</span>
                     </div>
                     
                   }
                 />
               </Grid>
               <Grid item xs={1}>
-                <IconButton to={`/`} component={Link}>
+                <IconButton to={`/testExecutionDetails/${exe.id}`} component={Link}>
                   <RemoveRedEye />
                 </IconButton>
               </Grid>

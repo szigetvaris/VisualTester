@@ -5,6 +5,8 @@ import CreateTestPage from "./CreateTestPage";
 import TestPlanListingPage from "./TestPlanListingPage";
 import TestPlanDetailsPage from "./TestPlanDetailsPage";
 import CreateTestPlanPage from "./CreateTestPlanPage";
+import TestPlanExecutionDetailsPage from "./TestPlanExecutionDetailsPage";
+import TestExecutionDetailsPage from "./TestExecutionDetailsPage";
 import MenuView from "./MenuView";
 import {
   BrowserRouter as Router,
@@ -36,6 +38,8 @@ export default class HomePage extends Component {
               path="/testPlanDetails/:id"
               element={<TestPlanDetailsPage />}
             />
+            <Route path="/testPlanExecutionDetails/:id" element={<TestPlanExecutionDetailsPage />} />
+            <Route path="/testExecutionDetails/:id" element={<TestExecutionDetailsPage />} />
             <Route path="/createTest" element={<CreateTestPage />} />
             <Route path="/createTestPlan" element={<CreateTestPlanPage />} />
           </Routes>

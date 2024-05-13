@@ -20,5 +20,17 @@ urlpatterns = [
     # Test Plan Run
     path("runTestPlan/<int:pk>/", TestPlanRun),
     # Test Execution
-    path("testExecution/<int:testID>/", TestExecutionForTestView.as_view()),
+    path("testExecution/<int:pk>/", TestExecutionView.as_view()),
+    path("testExecution/test/<int:testID>/",
+         TestExecutionForTestView.as_view()),
+    path("testExecution/testPlan/<int:testPlanExecutionID>/",
+         TestExecutionForTestPlanExecutionView.as_view()),
+    path("testExecution/reference/<int:pk>/",
+         TestImagesReferenceView.as_view()),
+    path("testImage/testExecution/<int:pk>/", TestImageForTestExecutionView.as_view()),
+    path("testExecution/image/<int:testImage>/", TestImageAsImage.as_view()),
+    # TestPlan Execution
+    path("testPlanExecution/<int:pk>/", TestPlanExecutionView.as_view()),
+    path("testPlanExecution/testPlan/<int:testPlanID>/",
+         TestPlanExecutionForTestPlanView.as_view()),
 ]

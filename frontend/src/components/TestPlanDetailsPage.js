@@ -25,6 +25,7 @@ import {
   Delete,
   SlowMotionVideo,
   RemoveCircle,
+  RemoveRedEye,
 } from "@material-ui/icons";
 
 import AddTestDialog from "./dialogs/AddTestDialog";
@@ -32,11 +33,13 @@ import AddTestDialog from "./dialogs/AddTestDialog";
 function TestPlanDetailsPage() {
   const [object, setObject] = useState(null);
   const [tests, setTests] = useState([]);
+  const [testPlanExecutions, setTestPlanExecutions] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     fetchObject();
     fetchTests();
+    fetchTestPlanExecutions();
   }, []);
 
   const fetchObject = async () => {
@@ -55,6 +58,15 @@ function TestPlanDetailsPage() {
       setTests(response.data);
     } catch (error) {
       console.error("Error fetching tests:", error);
+    }
+  };
+
+  const fetchTestPlanExecutions = async () => {
+    try {
+      const response = await axios.get(`/api/testPlanExecution/testPlan/${id}`);
+      setTestPlanExecutions(response.data);
+    } catch (error) {
+      console.error("Error fetching test plan executions:", error);
     }
   };
 
@@ -91,6 +103,12 @@ function TestPlanDetailsPage() {
 
     // refresh the component
     fetchTests();
+  };
+
+  const listStyle = {
+    maxHeight: "300px",
+    overflow: "auto",
+    background: "#eeeeee",
   };
 
   if (object === null) {
@@ -175,7 +193,7 @@ function TestPlanDetailsPage() {
           No test has added yet...
         </Typography>
       )}
-      <List>
+      <List style={listStyle}>
         {tests.map((obj) => (
           <div key={obj.id}>
             <ListItem key={obj.id}>
@@ -197,6 +215,33 @@ function TestPlanDetailsPage() {
             </ListItem>
             <Divider component={"li"} />
           </div>
+        ))}
+      </List>
+      <Divider style={{ height: "2px" }} />
+      <Typography variant="h6" gutterBottom>
+        Test Plan Executions:
+      </Typography>
+      <List style={listStyle}>
+        {testPlanExecutions.map((exe) => (
+          <ListItem key={exe.id}>
+            <Grid container spacing={1}>
+              <Grid item xs={11}>
+                <ListItemText
+                  primary={`Test Plan Execution ID: ${exe.id}`}
+                  secondary={
+                    <div>
+                      Created at: {exe.createdAt} | Status: {exe.status}
+                    </div>
+                  }
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <IconButton to={`/testPlanExecutionDetails/${exe.id}`} component={Link}>
+                  <RemoveRedEye />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </ListItem>
         ))}
       </List>
     </div>
